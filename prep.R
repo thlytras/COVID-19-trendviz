@@ -44,6 +44,8 @@ dat$Province.State[which(dat$Province.State=="")] <- "unknown"
 # Give names that are easier to handle
 names(dat) <- c("prov", "cnt", "conf", "dead", "recov", "date", "datetime", "LUpd")
 
+dat$cnt <- trimws(dat$cnt)
+
 # MANUALLY correct the initial cases from the Diamond Princess cruise ship
 # (the first 20 of which were "assigned" to Japan)
 dat$conf[with(dat, cnt=="Japan" & date=="2020-2-6")] <- 25
