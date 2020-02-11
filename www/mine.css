@@ -1,0 +1,5 @@
+.irs-from, .irs-to, .irs-min, .irs-max, .irs-single { visibility: hidden !important; }
+
+label[for=pltThick] { margin-top:2em }
+
+
