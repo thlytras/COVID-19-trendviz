@@ -96,14 +96,7 @@ server <- function(input, output, session) {
   })
   
   aggrData <- reactive({
-    aggregate(selData()[,c("conf","dead","recov")], selData()[,"datetime",drop=FALSE], sum, na.rm=TRUE)
-  })
-
-  # Returns aggregate data **by the end of the day**
-  aggrDataEOD <- reactive({
-    a <- aggrData()
-    a$date <- as.Date(a$datetime)
-    a[rev(!duplicated(rev(a$date))),]
+    aggregate(selData()[,c("conf","dead","recov")], selData()[,"date",drop=FALSE], sum, na.rm=TRUE)
   })
 
   
@@ -135,7 +128,7 @@ server <- function(input, output, session) {
   output$incCases <- renderPlot({
     if (nrow(aggrData())>0) {
       par(mar=c(5,4,2,2))
-      plotIncCases(aggrDataEOD(), 
+      plotIncCases(aggrData(), 
         plot.conf=input$plotConf, plot.recov=input$plotRecov, plot.dead=input$plotDead,
         thk=exp(input$pltThick), line=as.logical(as.integer(input$plotTypeInc)))
     }
@@ -149,7 +142,7 @@ server <- function(input, output, session) {
       png(file, width=1000, height=600, res=115)
       par(mar=c(5,4,2,2))
       if (nrow(aggrData())>0) {
-        plotIncCases(aggrDataEOD(), plot.conf=input$plotConf, 
+        plotIncCases(aggrData(), plot.conf=input$plotConf, 
           plot.recov=input$plotRecov, plot.dead=input$plotDead,
           thk=exp(input$pltThick), line=as.logical(as.integer(input$plotTypeInc)))
       }
@@ -160,7 +153,7 @@ server <- function(input, output, session) {
   output$secDerivative <- renderPlot({
     if (nrow(aggrData())>0) {
       par(mar=c(5,4,2,2))
-      plotSecDer(aggrDataEOD(), plot.conf=input$plotConf, 
+      plotSecDer(aggrData(), plot.conf=input$plotConf, 
         plot.recov=input$plotRecov, plot.dead=input$plotDead,
         thk=exp(input$pltThick))
     }
@@ -174,7 +167,7 @@ server <- function(input, output, session) {
       png(file, width=1000, height=600, res=115)
       par(mar=c(5,4,2,2))
       if (nrow(aggrData())>0) {
-        plotSecDer(aggrDataEOD(), plot.conf=input$plotConf, 
+        plotSecDer(aggrData(), plot.conf=input$plotConf, 
           plot.recov=input$plotRecov, plot.dead=input$plotDead, 
           thk=exp(input$pltThick))
       }

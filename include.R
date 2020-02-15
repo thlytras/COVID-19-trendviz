@@ -7,12 +7,12 @@ plotCumCases <- function(aggr, plot.conf=TRUE, plot.recov=TRUE, plot.dead=TRUE, 
   legLab <- c("Confirmed", "Recovered", "Deaths")
   if (length(curves)==0 || nrow(aggr)==0) return()
 
-  plot(aggr$datetime, aggr[[names(curves)[1]]], 
+  plot(aggr$date, aggr[[names(curves)[1]]], 
     type="l", bty="l", lwd=2*thk, col=colpal[curves[1]],
-    xlab="Date / time", ylab="Cumulative number of cases")
+    xlab="Date", ylab="Cumulative number of cases")
   if (length(curves)>1) {
     for (i in 2:length(curves)) {
-      points(aggr$datetime, aggr[[names(curves)[i]]],
+      points(aggr$date, aggr[[names(curves)[i]]],
         type="l", lwd=2*thk, col=colpal[curves[i]])
     }
   }
@@ -38,7 +38,7 @@ plotIncCases <- function(aggr, plot.conf=TRUE, plot.recov=TRUE, plot.dead=TRUE, 
   plot(aggr$date[-1], diff(aggr[[names(curves)[1]]]), 
     type=ifelse(line,"l","h"), bty="l", lwd=ifelse(line, 2, lwdVal)*thk, 
     lend=1, col=colpal[curves[1]],
-    xlab="Date / time", ylab="Number of new cases reported")
+    xlab="Date", ylab="Number of new cases reported")
   if (length(curves)>1) {
     for (i in 2:length(curves)) {
       points(aggr$date[-1]+0.2*(i-1)*as.integer(!line), diff(aggr[[names(curves)[i]]]),
@@ -73,7 +73,7 @@ plotSecDer <- function(aggr, plot.conf=TRUE, plot.recov=TRUE, plot.dead=TRUE, th
     dead = try(loess.smooth(as.integer(aggr$date[-(1:2)]), diff(diff(aggr$dead))), silent=TRUE)
   )
   plot(aggr$date[-(1:2)], diff(diff(aggr[[names(curves)[1]]])), 
-    type="n", bty="l", xlab="Date / time", 
+    type="n", bty="l", xlab="Date", 
     ylab="Change in number of new cases reported since previous report")
   abline(h=0, col="lightgrey", lwd=2)
   for (i in names(curves)) {
